@@ -1,0 +1,60 @@
+.root {
+    -fx-background-color: #121212;
+}
+
+#mapBackground {
+    -fx-background-color: #161616;
+}
+
+#controlsBackground {
+    -fx-background-color: #161616;
+}
+
+#settingsBackground {
+    -fx-background-color: #161616;
+}
+
+#scoreBackground {
+    -fx-background-color: #161616;
+}
+
+.label {
+    -fx-font-family: Inter;
+    -fx-font-size: 12;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button {
+    -fx-background-color: #BB86FC;
+    -fx-font-family: Inter;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+}
+
+#controlsLabel {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+#settingsLabel {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+#scoreLabel {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+#scoreMessageLabel {
+    -fx-alignment: center;
+}
+
+#scoreBoxLabel {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}

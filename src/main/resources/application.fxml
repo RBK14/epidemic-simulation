@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controller">
+   <children>
+      <Pane fx:id="mapBackground" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="580.0" prefWidth="580.0">
+         <children>
+            <Canvas fx:id="canvas" height="580.0" width="580.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="controlsBackground" layoutX="610.0" layoutY="10.0" prefHeight="120.0" prefWidth="280.0">
+         <Label fx:id="controlsTitleLabel" layoutY="10.0" prefHeight="20.0" prefWidth="280.0" text="SIMULATION CONTROLS" />
+         <Button fx:id="startButton" layoutX="100.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleStartSimulation" prefHeight="25.0" prefWidth="80.0" text="START" />
+         <Button fx:id="stopButton" layoutX="100.0" layoutY="80.0" mnemonicParsing="false" onAction="#handleStopSimulation" prefHeight="25.0" prefWidth="80.0" text="STOP" />
+      </Pane>
+      <Pane fx:id="settingsBackground" layoutX="610.0" layoutY="140.0" prefHeight="330.0" prefWidth="280.0">
+         <children>
+            <Label fx:id="settingsTitleLabel" layoutY="10.0" prefHeight="20.0" prefWidth="280.0" text="SIMULATION SETTINGS" />
+            <Label layoutX="10.0" layoutY="50.0" prefHeight="25.0" prefWidth="180.0" text="SIZE OF MAP" />
+            <TextField fx:id="mapSizeField" layoutX="220.0" layoutY="50.0" prefHeight="25.0" prefWidth="50.0" text="100" />
+            <Label layoutX="10.0" layoutY="90.0" prefHeight="25.0" prefWidth="180.0" text="NUMBER OF CIVILS" />
+            <TextField fx:id="civilNumField" layoutX="220.0" layoutY="90.0" prefHeight="25.0" prefWidth="50.0" text="2500" />
+            <Label layoutX="10.0" layoutY="130.0" prefHeight="25.0" prefWidth="180.0" text="NUMBER OF MEDICS" />
+            <TextField fx:id="medNumField" layoutX="220.0" layoutY="130.0" prefHeight="25.0" prefWidth="50.0" text="200" />
+            <Label layoutX="10.0" layoutY="170.0" prefHeight="25.0" prefWidth="180.0" text="NUMBER OF POLICE OFFICERS" />
+            <TextField fx:id="policeNumField" layoutX="220.0" layoutY="170.0" prefHeight="25.0" prefWidth="50.0" text="80" />
+            <Label layoutX="10.0" layoutY="210.0" prefHeight="25.0" prefWidth="180.0" text="NUMBER OF INITIALLY INFECTED" />
+            <TextField fx:id="infectedNumField" layoutX="220.0" layoutY="210.0" prefHeight="25.0" prefWidth="50.0" text="250" />
+            <Label layoutX="10.0" layoutY="250.0" prefHeight="25.0" prefWidth="180.0" text="VIRUS TRANSMISSION RATE" />
+            <TextField fx:id="transmissionField" layoutX="220.0" layoutY="250.0" prefHeight="25.0" prefWidth="50.0" text="0.35" />
+            <Label layoutX="10.0" layoutY="290.0" prefHeight="25.0" prefWidth="180.0" text="VIRUS MORTALITY RATE" />
+            <TextField fx:id="mortalityField" layoutX="220.0" layoutY="290.0" prefHeight="25.0" prefWidth="50.0" text="0.25" />
+         </children>
+      </Pane>
+      <Pane fx:id="scoreBackground" layoutX="610.0" layoutY="480.0" prefHeight="110.0" prefWidth="280.0">
+         <children>
+            <Label fx:id="scoreTitleLabel" layoutY="10.0" prefHeight="20.0" prefWidth="280.0" text="SCORE" />
+            <Label fx:id="scoreMessageLabel" layoutY="50.0" prefHeight="17.0" prefWidth="280.0" text="Percentage of dead population:" />
+            <Label fx:id="scoreLabel" layoutY="79.0" prefHeight="17.0" prefWidth="280.0" text="-----" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
