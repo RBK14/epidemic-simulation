@@ -1,6 +1,6 @@
 package org.example.simulation;
 
-import org.example.agent.*;
+import org.example.simulation.agent.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class Simulation {
 
         Random rand = new Random();
 
-        // Dodanie cywili do populacji
+        // Adding civilians to the population list.
         for (int i = 0; i < numOfCiv; i++) {
             int posX = rand.nextInt(mapSize);
             int posY = rand.nextInt(mapSize);
@@ -58,7 +58,7 @@ public class Simulation {
             }
         }
 
-        // Inicjalizacja epidemii
+        // Initialization of epidemic, changing agents health condition from healthy to infected.
         int infectedCounter = 0;
         while (infectedCounter < Math.min(numOfInfected, numOfCiv)) {
             int index = rand.nextInt(numOfCiv);
@@ -69,7 +69,7 @@ public class Simulation {
             }
         }
 
-        // Dodanie personelu medycznego do populacji
+        // Adding medical staff to the population list.
         for (int i = 0; i < numOfMed; i++) {
             int posX = rand.nextInt(mapSize);
             int posY = rand.nextInt(mapSize);
@@ -87,7 +87,7 @@ public class Simulation {
             }
         }
 
-        // Dodanie policji do populacji
+        // Adding police officers to the population list.
         for (int i = 0; i < numOfPolice; i++) {
             int posX = rand.nextInt(mapSize);
             int posY = rand.nextInt(mapSize);
@@ -107,30 +107,7 @@ public class Simulation {
         System.out.println();
     }
 
-    public void run() {
-        int i = 0;
-
-        initialize();
-
-        do {
-            //print();
-            step();
-            System.out.println();
-            i++;
-        } while (i < 10);
-    }
-
-    public double getResults() {
-        int numOfDead = 0;
-
-        for (Agent agent : population) {
-            if (agent.getHealthCondition().equals("dead")) {
-                numOfDead++;
-            }
-        }
-        return (double)numOfDead / numOfCiv;
-    }
-
+    @SuppressWarnings("unused")
     public void print() {
         String[][] map = new String[mapSize][mapSize];
 

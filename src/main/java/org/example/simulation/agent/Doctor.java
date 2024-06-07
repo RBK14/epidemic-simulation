@@ -1,18 +1,40 @@
-package org.example.agent;
+package org.example.simulation.agent;
 
 import org.example.simulation.Grid;
-
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Represents a doctor in the simulation.
+ * Doctor has a unique movement method, can heal and vaccinate other agents.
+ */
 public class Doctor extends Agent {
 
+    private final double healingProbability; // Probability of healing an infected agent
+    private final double vaccinationProbability; // Probability of vaccination a healthy agent
+
+    /**
+     *  Constructor to initialize a doctor with an ID, grid and position.
+     *  Doctor is immune by default
+     *
+     * @param id        Unique identifier for the doctor
+     * @param grid      The grid the doctor is part of
+     * @param posX      Initial X position of the doctor
+     * @param posY      Initial Y position of yhe doctor
+     */
     public Doctor(int id, Grid grid, int posX, int posY) {
         super(id, grid, posX, posY);
         this.healthCondition = "immune";
+        this.healingProbability = 0.5;
+        this.vaccinationProbability = 0.4;
     }
 
+    /**
+     * Simulates the healing process.
+     * Doctor can heal infected agent if there is any nearby.
+     * Doctor can vaccinate healthy agent if there is any nearby.
+     */
     public void heal() {
         Random rand = new Random();
 
@@ -23,12 +45,12 @@ public class Doctor extends Agent {
 
         for (Agent neighbour : neighbours) {
             if (neighbour.getHealthCondition().equals("infected")) {
-                if (rand.nextDouble() < 0.5) {
+                if (rand.nextDouble() < healingProbability) {
                     neighbour.setHealthCondition("healthy");
                     System.out.println(neighbour.getClass().getSimpleName() + "[" + neighbour.getId()  + "] " + "has been healed by Doctor[" + this.id + "]");
                 }
             } else if (neighbour.getHealthCondition().equals("healthy")) {
-                if (rand.nextDouble() < 0.4) {
+                if (rand.nextDouble() < vaccinationProbability) {
                     neighbour.setHealthCondition("immune");
                     System.out.println(neighbour.getClass().getSimpleName() + "[" + neighbour.getId()  + "] " + "has been vaccinated by Doctor[" + this.id + "]");
                 }
@@ -36,8 +58,11 @@ public class Doctor extends Agent {
         }
     }
 
+    /**
+     * Moves the doctor to a new position on the grid.
+     * Doctor moves towards the position of infected agent is there is any on the grid.
+     */
     @Override
-    @SuppressWarnings("DuplicatedCode")
     public void move() {
         Agent closestInfected = grid.getClosestInfected(posX, posY);
 
@@ -59,6 +84,9 @@ public class Doctor extends Agent {
         System.out.println("Doctor[" + this.id + "]" + " moved to (" + posX + "," + posY + ") towards (" + targetX + "," + targetY + ")");
     }
 
+    /**
+     * Defines the doctor's behavior in each simulation step.
+     */
     @Override
     public void step() {
         move();

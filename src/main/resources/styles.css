@@ -31,19 +31,19 @@
     -fx-font-weight: bold;
 }
 
-#controlsLabel {
+#controlsTitleLabel {
     -fx-font-size: 18;
     -fx-font-weight: bold;
     -fx-alignment: center;
 }
 
-#settingsLabel {
+#settingsTitleLabel {
     -fx-font-size: 18;
     -fx-font-weight: bold;
     -fx-alignment: center;
 }
 
-#scoreLabel {
+#scoreTitleLabel {
     -fx-font-size: 18;
     -fx-font-weight: bold;
     -fx-alignment: center;
@@ -53,7 +53,7 @@
     -fx-alignment: center;
 }
 
-#scoreBoxLabel {
+#scoreLabel {
     -fx-font-size: 16;
     -fx-font-weight: bold;
     -fx-alignment: center;

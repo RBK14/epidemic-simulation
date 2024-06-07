@@ -1,6 +1,6 @@
 package org.example.simulation;
 
-import org.example.agent.Agent;
+import org.example.simulation.agent.Agent;
 
 import java.util.ArrayList;
 import java.util.List;

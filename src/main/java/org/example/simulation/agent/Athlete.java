@@ -1,27 +1,48 @@
-package org.example.agent;
+package org.example.simulation.agent;
 
 import org.example.simulation.Grid;
 import org.example.simulation.Virus;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents an athlete in the simulation.
+ * Athletes can move more quickly and have a less chance of becoming infected and die from infection.
+ */
 public class Athlete extends Agent {
 
-    private int roundsAfterInfection;
-    private final Virus virus;
+    private int roundsAfterInfection; // Counts the number of rounds passed since infection
+    private final Virus virus; // A virus that the agent may become infected with
 
+    /**
+     * Constructor to initialize an athlete with an ID, grid, position, and virus information.
+     *
+     * @param id      Unique identifier for the athlete
+     * @param grid    The grid the athlete is part of
+     * @param posX    Initial X position of the athlete
+     * @param posY    Initial Y position of the athlete
+     * @param virus   The virus object containing transmission and mortality rate
+     */
     public Athlete(int id, Grid grid, int posX, int posY, Virus virus) {
         super(id, grid, posX, posY);
         this.roundsAfterInfection = 0;
         this.virus = virus;
     }
 
+    /**
+     * Gets the number of rounds passed since the athlete was infected.
+     *
+     * @return The number of rounds passed since infection
+     */
     public int getRoundsAfterInfection() {
         return roundsAfterInfection;
     }
 
+    /**
+     * Moves the athlete to a new random position on the grid.
+     * Athletes can move up to two positions in any direction.
+     */
     @Override
     public void move() {
         Random rand = new Random();
@@ -37,6 +58,10 @@ public class Athlete extends Agent {
         }
     }
 
+    /**
+     * Simulates the infection process for the athlete.
+     * Athlete can be infected if there are any infected agents nearby.
+     */
     @SuppressWarnings("DuplicatedCode")
     public void checkInfection() {
         if (!healthCondition.equals("healthy")) {
@@ -51,7 +76,7 @@ public class Athlete extends Agent {
         neighbours.remove(this);
 
         for (Agent neighbour : neighbours) {
-            if (canInfect(neighbour)) {
+            if (neighbour.getHealthCondition().equals("infected") && !neighbour.isIsolated()) {
                 if (rand.nextDouble() < 0.75 * virus.getTransmissionRate()) {
                     this.healthCondition = "infected";
                     System.out.println("Athlete[" + id + "] has been infected by" + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
@@ -60,6 +85,9 @@ public class Athlete extends Agent {
         }
     }
 
+    /**
+     * Defines the athlete's behavior in each simulation step.
+     */
     @Override
     public void step() {
         move();

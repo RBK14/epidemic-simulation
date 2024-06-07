@@ -1,9 +1,9 @@
-import org.example.agent.PoliceOfficer;
+import org.example.simulation.agent.PoliceOfficer;
 import org.example.simulation.Grid;
 import org.example.simulation.Virus;
-import org.example.agent.Agent;
-import org.example.agent.Citizen;
-import org.example.agent.Doctor;
+import org.example.simulation.agent.Agent;
+import org.example.simulation.agent.Citizen;
+import org.example.simulation.agent.Doctor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

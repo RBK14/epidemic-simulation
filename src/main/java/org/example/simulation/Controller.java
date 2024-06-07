@@ -1,4 +1,4 @@
-package org.example;
+package org.example.simulation;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,9 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.example.agent.*;
-import org.example.simulation.Simulation;
-import org.example.simulation.Virus;
+import org.example.simulation.agent.*;
 
 public class Controller {
 
@@ -138,7 +136,7 @@ public class Controller {
                                 gc.setFill(Color.GREEN);
                                 gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
                             }
-                            default -> {
+                            case "infected" -> {
                                 gc.setFill(Color.RED);
                                 gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
                             }
