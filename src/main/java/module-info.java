@@ -1,3 +1,6 @@
+/**
+ * Module definition for the epidemic simulation application.
+ */
 module org.example.simulation {
     requires javafx.controls;
     requires javafx.fxml;

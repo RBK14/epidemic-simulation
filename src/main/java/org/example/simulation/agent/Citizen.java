@@ -30,6 +30,11 @@ public class Citizen extends Agent {
         this.virus = virus;
     }
 
+    /**
+     * Gets the number of rounds passed since the citizen was infected.
+     *
+     * @return The number of rounds passed since infection
+     */
     public int getRoundsAfterInfection() {
         return roundsAfterInfection;
     }

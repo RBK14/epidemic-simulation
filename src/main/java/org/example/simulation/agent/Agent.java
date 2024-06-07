@@ -10,11 +10,35 @@ import java.util.Random;
  */
 public abstract class Agent {
 
-    protected final int id; // Unique identifier for the agent
-    protected final Grid grid; // Reference to grid the agent is in
-    protected int posX, posY; // Position of the agent on the grid
-    protected String healthCondition; // Health condition of the agent
-    protected boolean isolated; // Whether is agent isolated, can move or spread epidemic
+    /**
+     * Unique identifier for the agent.
+     */
+    protected final int id;
+
+    /**
+     * Reference to the grid the agent is in.
+     */
+    protected final Grid grid;
+
+    /**
+     * The X coordinate of the agent's position on the grid.
+     */
+    protected int posX;
+
+    /**
+     * The Y coordinate of the agent's position on the grid.
+     */
+    protected int posY;
+
+    /**
+     * Health condition of the agent.
+     */
+    protected String healthCondition;
+
+    /**
+     * Indicates whether the agent is isolated and can move or spread the epidemic.
+     */
+    protected boolean isolated;
 
     /**
      * Constructor to initialize the agent with, ID, grid and position.

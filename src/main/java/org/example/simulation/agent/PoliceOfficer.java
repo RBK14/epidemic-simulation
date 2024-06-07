@@ -3,7 +3,6 @@ package org.example.simulation.agent;
 import org.example.simulation.Grid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Represents a police officer in the simulation.
@@ -30,8 +29,6 @@ public class PoliceOfficer extends Agent {
      * Police officer can isolate infected agent if there is any nearby.
      */
     public void isolate() {
-        Random rand = new Random();
-
         List<Agent> neighbours = new ArrayList<>();
         neighbours.addAll(grid.getAgentsAtPosition(posX, posY));
         neighbours.addAll(grid.getNeighbors(posX, posY));

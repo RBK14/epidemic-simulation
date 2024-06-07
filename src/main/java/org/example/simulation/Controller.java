@@ -11,49 +11,64 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.simulation.agent.*;
 
+/**
+ * Controller class for managing the simulation GUI.
+ * Handles user inputs, initializes the simulation, and updates the display.
+ */
 public class Controller {
 
     @FXML
-    private Canvas canvas;
+    private Canvas canvas; // The canvas for drawing the grid
     @FXML
-    private Label scoreLabel;
+    private Label scoreLabel; // Label for displaying the score (percentage of dead civilians)
     @FXML
-    private TextField mapSizeField;
+    private TextField mapSizeField; // TextField for inputting the map size
     @FXML
-    private TextField civilNumField;
+    private TextField civilNumField; // TextField for inputting the number of civilians
     @FXML
-    private TextField medNumField;
+    private TextField medNumField; // TextField for inputting the number of medical staff
     @FXML
-    private TextField policeNumField;
+    private TextField policeNumField; // TextField for inputting the number of police officers
     @FXML
-    private TextField infectedNumField;
+    private TextField infectedNumField; // TextField for inputting the number of initially infected agents
     @FXML
-    private TextField transmissionField;
+    private TextField transmissionField; // TextField for inputting the virus transmission rate
     @FXML
-    private TextField mortalityField;
+    private TextField mortalityField; // TextField for inputting the virus mortality rate
 
-    private Timeline timeline;
-    private static int sizeOfMap;
-    private static double cellSize;
-    private Simulation simulation;
-    private static boolean isRunning = false;
-    private static int numberOfDeadAgents;
-    private static int numberOfCivil;
+    private Timeline timeline; // Timeline for managing the simulation steps
+    private static int sizeOfMap; // The size of the grid (map)
+    private static double cellSize; // The size of each cell in the grid
+    private Simulation simulation; // The simulation instance
+    private static boolean initialized = false; // Flag indicating if the simulation is initialized
+    private static int numberOfDeadAgents; // Counter for the number of dead civilians
+    private static int numberOfCivil; // Total number of civilians
 
+    /**
+     * Handles the start button click event.
+     * Initializes and starts the simulation if it's not already running.
+     */
     @FXML
     private void handleStartSimulation() {
-        if (!isRunning) {
+        if (!initialized) {
             initializeSimulation();
         }
 
         timeline.play();
     }
 
+    /**
+     * Handles the stop button click event.
+     * Stops the simulation timeline.
+     */
     @FXML
     private void handleStopSimulation() {
         timeline.stop();
     }
 
+    /**
+     * Initializes the simulation with parameters from the GUI.
+     */
     private void initializeSimulation() {
         int numberOfMedic;
         int numberOfPolice;
@@ -61,7 +76,7 @@ public class Controller {
         double transmissionRate;
         double mortalityRate;
 
-        // Pobranie wartości startowych z aplikacji
+        // Retrieve initial values from the application
         try {
             sizeOfMap = Integer.parseInt(mapSizeField.getText());
             numberOfCivil = Integer.parseInt(civilNumField.getText());
@@ -75,24 +90,27 @@ public class Controller {
             return;
         }
 
-        // Obliczenie rozmiaru komorki
+        // Calculate cell size
         cellSize = (double)580 / sizeOfMap;
 
-        // Utworzenie wirusa i symulacji
+        // Create virus and simulation
         Virus virus = new Virus(transmissionRate, mortalityRate);
         simulation = new Simulation(virus, sizeOfMap, numberOfCivil, numberOfMedic, numberOfPolice, numberOfInfected);
 
-        // Inicjalizacja symulacji
+        // Initialize the simulation
         simulation.initialize();
 
         timeline = new Timeline(new KeyFrame(Duration.millis(750), e -> runSimulationStep()));
         timeline.setCycleCount(Timeline.INDEFINITE);
 
-        isRunning = true;
+        initialized = true;
 
         drawGrid();
     }
 
+    /**
+     * Advances the simulation by one step and updates the display.
+     */
     private void runSimulationStep() {
         simulation.step();
         drawGrid();
@@ -102,6 +120,9 @@ public class Controller {
         numberOfDeadAgents = 0;
     }
 
+    /**
+     * Draws the current state of the grid on the canvas.
+     */
     private void drawGrid() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());

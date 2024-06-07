@@ -1,15 +1,24 @@
 package org.example.simulation;
 
 import org.example.simulation.agent.Agent;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the simulation grid where agents move and interact.
+ * The grid manages the positions of agents and provides methods to manipulate them.
+ */
 public class Grid {
 
-    private final int mapSize;
-    List<Agent>[][] cells;
+    private final int mapSize; // Size of the grid (map)
+    List<Agent>[][] cells; // 2D array of lists to agents on each cell representing a position in the grid
 
+    /**
+     * Constructor to initialize the grid with a specified size.
+     * Initializes each cell in the grid as an empty list of agents.
+     *
+     * @param mapSize The size of the grid
+     */
     @SuppressWarnings("unchecked")
     public Grid(int mapSize) {
         this.mapSize = mapSize;
@@ -22,14 +31,34 @@ public class Grid {
         }
     }
 
+    /**
+     * Gets the size of the grid.
+     *
+     * @return The size of the grid
+     */
     public int getMapSize() {
         return mapSize;
     }
 
+    /**
+     * Adds an agent to a specified position on the grid.
+     *
+     * @param agent The agent to add
+     * @param x     The X coordinate of the agent's position
+     * @param y     The Y coordinate of the agent's position
+     */
     public void addAgent(Agent agent, int x, int y) {
         cells[x][y].add(agent);
     }
 
+    /**
+     * Moves an agent to a new position on the grid.
+     * Updates the agent's coordinates and moves them to the new cell.
+     *
+     * @param agent The agent to move
+     * @param newX  The new X coordinate of the agent's position
+     * @param newY  The new Y coordinate of the agent's position
+     */
     public void moveAgent(Agent agent, int newX, int newY) {
         if (agent == null) {
             return;
@@ -40,6 +69,13 @@ public class Grid {
         cells[newX][newY].add(agent);
     }
 
+    /**
+     * Finds the closest infected agent relative to a specified position.
+     *
+     * @param x The X coordinate of the position
+     * @param y The Y coordinate of the position
+     * @return The closest infected agent, or null if none are found
+     */
     public Agent getClosestInfected(int x, int y) {
         Agent closestInfected = null;
         double closestDistance = Double.MAX_VALUE;
@@ -60,10 +96,25 @@ public class Grid {
         return closestInfected;
     }
 
+    /**
+     * Gets all agents at a specified position on the grid.
+     *
+     * @param x The X coordinate of the position
+     * @param y The Y coordinate of the position
+     * @return A list of agents at the specified position
+     */
     public List<Agent> getAgentsAtPosition(int x, int y) {
         return cells[x][y];
     }
 
+    /**
+     * Gets all neighboring agents around a specified position.
+     * Includes agents in adjacent cells, excluding the cell itself.
+     *
+     * @param x The X coordinate of the position
+     * @param y The Y coordinate of the position
+     * @return A list of neighboring agents
+     */
     public List<Agent> getNeighbors(int x, int y) {
         List<Agent> neighbors = new ArrayList<>();
         for (int i = Math.max(0, x - 1); i <= Math.min(mapSize - 1, x + 1); i++) {
