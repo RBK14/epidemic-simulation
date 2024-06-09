@@ -11,7 +11,7 @@ import java.util.List;
 public class Grid {
 
     private final int mapSize; // Size of the grid (map)
-    List<Agent>[][] cells; // 2D array of lists to agents on each cell representing a position in the grid
+    List<Agent>[][] cells; // 2D array of lists of agents on each cell representing a position in the grid
 
     /**
      * Constructor to initialize the grid with a specified size.
