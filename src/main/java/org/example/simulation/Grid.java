@@ -1,6 +1,8 @@
 package org.example.simulation;
 
 import org.example.simulation.agent.Agent;
+import org.example.simulation.agent.Doctor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +96,33 @@ public class Grid {
             }
         }
         return closestInfected;
+    }
+
+    /**
+     * Finds the closest Doctor relative to a specified position.
+     *
+     * @param x The X coordinate of the position
+     * @param y The Y coordinate of the position
+     * @return The closest Doctor, or null if none are found
+     */
+    public Agent getClosestDoctor(int x, int y) {
+        Agent closestDoctor = null;
+        double closestDistance = Double.MAX_VALUE;
+
+        for (int i = 0; i < mapSize; i++) {
+            for (int j = 0; j < mapSize; j++) {
+                for (Agent agent : cells[i][j]) {
+                    if (agent instanceof Doctor) {
+                        double distance = Math.sqrt(Math.pow(x - i, 2) + Math.pow(y - j, 2));
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestDoctor = agent;
+                        }
+                    }
+                }
+            }
+        }
+        return closestDoctor;
     }
 
     /**

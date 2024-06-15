@@ -1,8 +1,6 @@
 package org.example.simulation;
 
 import org.example.simulation.agent.Agent;
-import org.example.simulation.agent.Athlete;
-import org.example.simulation.agent.Citizen;
 import java.util.Random;
 
 /**
@@ -35,25 +33,18 @@ public class Virus {
     }
 
     /**
-     * Attempts to kill an infected agent, based on the virus's mortality rate and agent's rounds after infection.
+     * Attempts to kill an infected agent, based on the virus's mortality rate.
      *
      * @param agent The agent potential to kill
+     * @param mortalityFactor Factor which can decrease chance of agent's death
      */
-    public void kill(Agent agent) {
+    public void kill(Agent agent, double mortalityFactor) {
         Random rand = new Random();
 
-        // Citizens have a chance of dying if more than 3 rounds have passed since infection
-        if (agent instanceof Citizen && ((Citizen) agent).getRoundsAfterInfection() > 3) {
-            if (rand.nextDouble() < mortalityRate) {
+        if (agent.getHealthCondition().equals("infected")) {
+            if (rand.nextDouble() < mortalityFactor * mortalityRate) {
                 agent.setHealthCondition("dead");
-                System.out.println("Citizen[" + agent.getId() + "] was killed by virus");
-            }
-        // Athletes have a chance of dying if more than 4 rounds have passed since infection
-        // Their mortality rate is reduced by 25%
-        } else if (agent instanceof Athlete && ((Athlete) agent).getRoundsAfterInfection() > 4) {
-            if (rand.nextDouble() < 0.75 * mortalityRate) {
-                agent.setHealthCondition("dead");
-                System.out.println("Athlete[" + agent.getId() + "] has been killed by virus");
+                System.out.println(agent.getClass().getSimpleName() + "[" + agent.getId() + "] was killed by virus");
             }
         }
     }

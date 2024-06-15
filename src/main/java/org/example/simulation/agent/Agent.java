@@ -1,6 +1,11 @@
 package org.example.simulation.agent;
 
+import javafx.scene.paint.Color;
 import org.example.simulation.Grid;
+import org.example.simulation.Virus;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -36,6 +41,11 @@ public abstract class Agent {
     protected String healthCondition;
 
     /**
+     *
+     */
+    protected Virus virus;
+
+    /**
      * Indicates whether the agent is isolated and can move or spread the epidemic.
      */
     protected boolean isolated;
@@ -48,13 +58,14 @@ public abstract class Agent {
      * @param posX      Initial X position of the agent
      * @param posY      Initial Y position of yhe agent
      */
-    public Agent(int id, Grid grid, int posX, int posY) {
+    public Agent(int id, Grid grid, int posX, int posY, Virus virus) {
         this.id = id;
         this.grid = grid;
         this.posX = posX;
         this.posY = posY;
         this.healthCondition = "healthy";
         this.isolated = false;
+        this.virus = virus;
     }
 
     /**
@@ -139,6 +150,34 @@ public abstract class Agent {
     }
 
     /**
+     * Simulates the infection process for the athlete.
+     * Agent can be infected if there are any infected agents nearby.
+     *
+     * @param transmissionFactor Factor which can decrease chance of infection
+     */
+    public void checkInfection(double transmissionFactor) {
+        if (!healthCondition.equals("healthy")) {
+            return;
+        }
+
+        Random rand = new Random();
+
+        List<Agent> neighbours = new ArrayList<>();
+        neighbours.addAll(grid.getAgentsAtPosition(posX, posY));
+        neighbours.addAll(grid.getNeighbors(posX, posY));
+        neighbours.remove(this);
+
+        for (Agent neighbour : neighbours) {
+            if (neighbour.getHealthCondition().equals("infected") && !neighbour.isIsolated()) {
+                if (rand.nextDouble() < transmissionFactor * virus.getTransmissionRate()) {
+                    this.healthCondition = "infected";
+                    System.out.println("Athlete[" + id + "] has been infected by" + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
+                }
+            }
+        }
+    }
+
+    /**
      * Basic method responsible for agents' movement.
      * Moves the agent by one position in random direction.
      * Method can be overridden in subclasses.
@@ -155,6 +194,36 @@ public abstract class Agent {
         if (isPosCorrect && !isolated && !healthCondition.equals("dead")) {
             grid.moveAgent(this, newX, newY);
             System.out.println(this.getClass().getSimpleName() + "[" + id + "]" + " moved to (" + newX + "," + newY + ")");
+        }
+    }
+
+    /**
+     * Returns the color representing the agent's health condition.
+     * <p>
+     * This method returns a specific color based on the agent's health condition:
+     * - Black: if the agent is "dead"
+     * - White: if the agent is "immune"
+     * - Red: if the agent is "infected"
+     * - Green: for any other health condition, which is assumed to be "healthy"
+     * <p>
+     * The colors are used to visually distinguish agents on the simulation grid.
+     *
+     * @return the color representing the agent's health condition
+     */
+    public Color getColor() {
+        switch (this.getHealthCondition()) {
+            case "dead" -> {
+                return Color.BLACK;
+            }
+            case "immune" -> {
+                return Color.WHITE;
+            }
+            case "infected" -> {
+                return Color.RED;
+            }
+            default -> {
+                return Color.GREEN;
+            }
         }
     }
 

@@ -2,8 +2,6 @@ package org.example.simulation.agent;
 
 import org.example.simulation.Grid;
 import org.example.simulation.Virus;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,7 +11,6 @@ import java.util.Random;
 public class Athlete extends Agent {
 
     private int roundsAfterInfection; // Counts the number of rounds passed since infection
-    private final Virus virus; // A virus that the agent may become infected with
 
     /**
      * Constructor to initialize an athlete with an ID, grid, position, and virus information.
@@ -25,63 +22,54 @@ public class Athlete extends Agent {
      * @param virus   The virus object containing transmission and mortality rate
      */
     public Athlete(int id, Grid grid, int posX, int posY, Virus virus) {
-        super(id, grid, posX, posY);
+        super(id, grid, posX, posY, virus);
         this.roundsAfterInfection = 0;
         this.virus = virus;
     }
 
     /**
-     * Gets the number of rounds passed since the athlete was infected.
-     *
-     * @return The number of rounds passed since infection
-     */
-    public int getRoundsAfterInfection() {
-        return roundsAfterInfection;
-    }
-
-    /**
      * Moves the athlete to a new random position on the grid.
+     * Athletes move towards the position of the nearest Doctor
      * Athletes can move up to two positions in any direction.
      */
     @Override
     public void move() {
-        Random rand = new Random();
+        Agent closestDoctor = grid.getClosestDoctor(this.posX, this.posY);
 
-        int newX = posX + rand.nextInt(5) - 2;
-        int newY = posY + rand.nextInt(5) - 2;
+        if (closestDoctor == null || this.getHealthCondition().equals("immune")) {
+            Random rand = new Random();
+
+            int newX = posX + rand.nextInt(5) - 2;
+            int newY = posY + rand.nextInt(5) - 2;
+
+            boolean isPosCorrect = (newX >= 0 && newX < grid.getMapSize()) && (newY >= 0 && newY < grid.getMapSize());
+
+            if ((!healthCondition.equals("dead") && !isolated) && isPosCorrect) {
+                grid.moveAgent(this, newX, newY);
+                System.out.println("Athlete[" + id + "]" + " moved to (" + newX + "," + newY + ")");
+            }
+            return;
+        }
+
+        int targetX = closestDoctor.getPosX();
+        int targetY = closestDoctor.getPosY();
+
+        int newX;
+        int newY;
+
+        if (this.posX < targetX) newX = this.posX + 2;
+        else if (this.posX > targetX) newX = this.posX - 2;
+        else newX = this.posX;
+
+        if (this.posY < targetY) newY = this.posY + 2;
+        else if (this.posY > targetY) newY = this.posY - 2;
+        else newY = this.posY;
 
         boolean isPosCorrect = (newX >= 0 && newX < grid.getMapSize()) && (newY >= 0 && newY < grid.getMapSize());
 
         if ((!healthCondition.equals("dead") && !isolated) && isPosCorrect) {
             grid.moveAgent(this, newX, newY);
-            System.out.println("Athlete[" + id + "]" + " moved to (" + newX + "," + newY + ")");
-        }
-    }
-
-    /**
-     * Simulates the infection process for the athlete.
-     * Athlete can be infected if there are any infected agents nearby.
-     */
-    @SuppressWarnings("DuplicatedCode")
-    public void checkInfection() {
-        if (!healthCondition.equals("healthy")) {
-            return;
-        }
-
-        Random rand = new Random();
-
-        List<Agent> neighbours = new ArrayList<>();
-        neighbours.addAll(grid.getAgentsAtPosition(posX, posY));
-        neighbours.addAll(grid.getNeighbors(posX, posY));
-        neighbours.remove(this);
-
-        for (Agent neighbour : neighbours) {
-            if (neighbour.getHealthCondition().equals("infected") && !neighbour.isIsolated()) {
-                if (rand.nextDouble() < 0.75 * virus.getTransmissionRate()) {
-                    this.healthCondition = "infected";
-                    System.out.println("Athlete[" + id + "] has been infected by" + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
-                }
-            }
+            System.out.println("Athlete[" + id + "]" + " moved to (" + newX + "," + newY + ") towards (" + targetX + "," + targetY + ")");
         }
     }
 
@@ -91,7 +79,11 @@ public class Athlete extends Agent {
     @Override
     public void step() {
         move();
-        checkInfection();
+        checkInfection(0.75);
+
+        if (this.roundsAfterInfection > 0) {
+            virus.kill(this, 0.75);
+        }
 
         if (healthCondition.equals("infected")) {
             this.roundsAfterInfection++;

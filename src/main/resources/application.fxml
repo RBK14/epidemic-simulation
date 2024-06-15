@@ -41,7 +41,7 @@
       <Pane fx:id="scoreBackground" layoutX="610.0" layoutY="480.0" prefHeight="110.0" prefWidth="280.0">
          <children>
             <Label fx:id="scoreTitleLabel" layoutY="10.0" prefHeight="20.0" prefWidth="280.0" text="SCORE" />
-            <Label fx:id="scoreMessageLabel" layoutY="50.0" prefHeight="17.0" prefWidth="280.0" text="Percentage of dead population:" />
+            <Label fx:id="scoreMessageLabel" layoutY="50.0" prefHeight="17.0" prefWidth="280.0" text="Number of dead and infected agents:" />
             <Label fx:id="scoreLabel" layoutY="79.0" prefHeight="17.0" prefWidth="280.0" text="-----" />
          </children>
       </Pane>

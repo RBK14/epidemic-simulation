@@ -1,6 +1,9 @@
 package org.example.simulation.agent;
 
+import javafx.scene.paint.Color;
 import org.example.simulation.Grid;
+import org.example.simulation.Virus;
+
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,8 +26,8 @@ public class Doctor extends Agent {
      * @param posX      Initial X position of the doctor
      * @param posY      Initial Y position of yhe doctor
      */
-    public Doctor(int id, Grid grid, int posX, int posY) {
-        super(id, grid, posX, posY);
+    public Doctor(int id, Grid grid, int posX, int posY, Virus virus) {
+        super(id, grid, posX, posY, virus);
         this.healthCondition = "immune";
         this.healingProbability = 0.5;
         this.vaccinationProbability = 0.4;
@@ -82,6 +85,16 @@ public class Doctor extends Agent {
 
         grid.moveAgent(this, posX, posY);
         System.out.println("Doctor[" + this.id + "]" + " moved to (" + posX + "," + posY + ") towards (" + targetX + "," + targetY + ")");
+    }
+
+    /**
+     * Returns the color representing the doctor's presence on the simulation grid.
+     *
+     * @return the color DARKBLUE, representing a doctor agent
+     */
+    @Override
+    public Color getColor() {
+        return Color.DARKBLUE;
     }
 
     /**

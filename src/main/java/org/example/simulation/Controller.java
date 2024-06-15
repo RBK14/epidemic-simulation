@@ -1,5 +1,6 @@
 package org.example.simulation;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -7,7 +8,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.simulation.agent.*;
 
@@ -40,9 +40,22 @@ public class Controller {
     private static int sizeOfMap; // The size of the grid (map)
     private static double cellSize; // The size of each cell in the grid
     private Simulation simulation; // The simulation instance
-    private static boolean initialized = false; // Flag indicating if the simulation is initialized
-    private static int numberOfDeadAgents; // Counter for the number of dead civilians
-    private static int numberOfCivil; // Total number of civilians
+    private static int numberOfInfected; // Counter for the number of dead and infected civilians
+
+    /**
+     * Checks if the simulation is currently running.
+     * <p>
+     * This method checks the status of the timeline object, which is responsible
+     * for controlling the simulation steps. If the timeline is not null and its
+     * status is `Animation.Status.RUNNING`, this indicates that the simulation
+     * is currently active and running.
+     *
+     * @return true if the simulation timeline is running, false otherwise
+     */
+    @FXML
+    private boolean isSimulationRunning() {
+        return timeline != null && timeline.getStatus() == Animation.Status.RUNNING;
+    }
 
     /**
      * Handles the start button click event.
@@ -50,11 +63,10 @@ public class Controller {
      */
     @FXML
     private void handleStartSimulation() {
-        if (!initialized) {
+        if (!isSimulationRunning()) {
             initializeSimulation();
+            timeline.play();
         }
-
-        timeline.play();
     }
 
     /**
@@ -70,6 +82,7 @@ public class Controller {
      * Initializes the simulation with parameters from the GUI.
      */
     private void initializeSimulation() {
+        int numberOfCivil;
         int numberOfMedic;
         int numberOfPolice;
         int numberOfInfected;
@@ -77,6 +90,7 @@ public class Controller {
         double mortalityRate;
 
         // Retrieve initial values from the application
+        // Total number of civilians
         try {
             sizeOfMap = Integer.parseInt(mapSizeField.getText());
             numberOfCivil = Integer.parseInt(civilNumField.getText());
@@ -103,8 +117,6 @@ public class Controller {
         timeline = new Timeline(new KeyFrame(Duration.millis(750), e -> runSimulationStep()));
         timeline.setCycleCount(Timeline.INDEFINITE);
 
-        initialized = true;
-
         drawGrid();
     }
 
@@ -115,9 +127,8 @@ public class Controller {
         simulation.step();
         drawGrid();
 
-        double score = ((double) numberOfDeadAgents / numberOfCivil) * 100;
-        scoreLabel.setText(String.format("%.2f%%", score));
-        numberOfDeadAgents = 0;
+        scoreLabel.setText(String.valueOf(numberOfInfected));
+        numberOfInfected = 0;
     }
 
     /**
@@ -132,46 +143,17 @@ public class Controller {
         for (Agent agent : simulation.getPopulation()) {
             map[agent.getPosX()][agent.getPosY()] = agent;
 
-            if (agent.getHealthCondition().equals("dead")) {
-                numberOfDeadAgents++;
+            if (agent.getHealthCondition().equals("dead") || agent.getHealthCondition().equals("infected")) {
+                numberOfInfected++;
             }
         }
 
         for (int i = 0; i < sizeOfMap; i++) {
             for (int j = 0; j < sizeOfMap; j++) {
 
-                Agent agentOnField = map[i][j];
-
-                if (agentOnField != null) {
-                    if (agentOnField instanceof Citizen || agentOnField instanceof Athlete) {
-                        switch (agentOnField.getHealthCondition()) {
-                            case "dead" -> {
-                                gc.setFill(Color.BLACK);
-                                gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                            }
-                            case "immune" -> {
-                                gc.setFill(Color.WHITE);
-                                gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                            }
-                            case "healthy" -> {
-                                gc.setFill(Color.GREEN);
-                                gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                            }
-                            case "infected" -> {
-                                gc.setFill(Color.RED);
-                                gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                            }
-                        }
-                    } else if (agentOnField instanceof Nurse) {
-                        gc.setFill(Color.CYAN);
-                        gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                    } else if (agentOnField instanceof PoliceOfficer) {
-                        gc.setFill(Color.YELLOW);
-                        gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                    } else if (agentOnField instanceof Doctor) {
-                        gc.setFill(Color.DARKBLUE);
-                        gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
-                    }
+                if (map[i][j] != null) {
+                    gc.setFill(map[i][j].getColor());
+                    gc.fillOval(i * cellSize, j * cellSize, cellSize, cellSize);
                 }
             }
         }

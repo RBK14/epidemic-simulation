@@ -109,12 +109,12 @@ public class Simulation {
             int posY = rand.nextInt(mapSize);
 
             if (i % 5 == 0) {
-                Doctor doctor = new Doctor(numOfCiv + i, grid, posX, posY);
+                Doctor doctor = new Doctor(numOfCiv + i, grid, posX, posY, virus);
                 population.add(doctor);
                 grid.addAgent(doctor, posX, posY);
                 initializationMessage(doctor);
             } else {
-                Nurse nurse = new Nurse(numOfCiv + i, grid, posX, posY);
+                Nurse nurse = new Nurse(numOfCiv + i, grid, posX, posY, virus);
                 population.add(nurse);
                 grid.addAgent(nurse, posX, posY);
                 initializationMessage(nurse);
@@ -126,7 +126,7 @@ public class Simulation {
             int posX = rand.nextInt(mapSize);
             int posY = rand.nextInt(mapSize);
 
-            PoliceOfficer police = new PoliceOfficer(numOfCiv + numOfMed + i, grid, posX, posY);
+            PoliceOfficer police = new PoliceOfficer(numOfCiv + numOfMed + i, grid, posX, posY, virus);
             population.add(police);
             grid.addAgent(police, posX, posY);
             initializationMessage(police);
@@ -140,7 +140,6 @@ public class Simulation {
     public void step() {
         for (Agent agent : population) {
             agent.step();
-            virus.kill(agent);
         }
         System.out.println();
     }

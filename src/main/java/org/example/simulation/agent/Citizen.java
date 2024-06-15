@@ -2,9 +2,6 @@ package org.example.simulation.agent;
 
 import org.example.simulation.Grid;
 import org.example.simulation.Virus;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Represents a citizen in the simulation.
@@ -13,7 +10,6 @@ import java.util.Random;
 public class Citizen extends Agent {
 
     private int roundsAfterInfection; // Counts the number of rounds passed since infection
-    private final Virus virus; // A virus that the agent may become infected with
 
     /**
      * Constructor to initialize a citizen with an ID, grid, position, and virus information.
@@ -25,13 +21,22 @@ public class Citizen extends Agent {
      * @param virus     The virus object containing transmission and mortality rates
      */
     public Citizen(int id, Grid grid, int posX, int posY, Virus virus) {
-        super(id, grid, posX, posY);
+        super(id, grid, posX, posY, virus);
         this.roundsAfterInfection = 0;
         this.virus = virus;
     }
 
     /**
-     * Gets the number of rounds passed since the citizen was infected.
+     * Sets the number of rounds passed since the citizen was infected.
+     *
+     * @param roundsAfterInfection The number of rounds passed since infection
+     */
+    public void setRoundsAfterInfection(int roundsAfterInfection) {
+        this.roundsAfterInfection = roundsAfterInfection;
+    }
+
+    /**
+     * Gets the number of rounds passed since the citizen was infected
      *
      * @return The number of rounds passed since infection
      */
@@ -40,39 +45,16 @@ public class Citizen extends Agent {
     }
 
     /**
-     * Simulates the infection process for the citizen.
-     * Citizen can be infected if there are any infected agents nearby.
-     */
-    @SuppressWarnings("DuplicatedCode")
-    public void checkInfection() {
-        if (!healthCondition.equals("healthy")) {
-            return;
-        }
-
-        Random rand = new Random();
-
-        List<Agent> neighbours = new ArrayList<>();
-        neighbours.addAll(grid.getAgentsAtPosition(posX, posY));
-        neighbours.addAll(grid.getNeighbors(posX, posY));
-        neighbours.remove(this);
-
-        for (Agent neighbour : neighbours) {
-            if (neighbour.getHealthCondition().equals("infected") && !neighbour.isIsolated()) {
-                if (rand.nextDouble() < virus.getTransmissionRate()) {
-                    this.healthCondition = "infected";
-                    System.out.println("Citizen[" + id + "] has been infected by" + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
-                }
-            }
-        }
-    }
-
-    /**
      * Defines the citizen's behavior in each simulation step.
      */
     @Override
     public void step() {
         super.move();
-        checkInfection();
+        checkInfection(1);
+
+        if (this.roundsAfterInfection > 0) {
+            virus.kill(this, 1);
+        }
 
         if (healthCondition.equals("infected")) {
             this.roundsAfterInfection++;

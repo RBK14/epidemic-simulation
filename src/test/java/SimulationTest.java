@@ -17,16 +17,17 @@ public class SimulationTest {
     private Citizen healthy;
     private Citizen infected;
     private PoliceOfficer police;
+    private Virus virus;
 
     @BeforeEach
     void setUp() {
         grid = new Grid(10);
-        Virus virus = new Virus(1, 1);
-        doctor = new Doctor(1, grid, 0, 0);
+        virus = new Virus(1, 1);
+        doctor = new Doctor(1, grid, 0, 0, virus);
         healthy = new Citizen(2, grid, 5, 5, virus);
         infected = new Citizen(3,grid,5,5, virus);
         infected.setHealthCondition("infected");
-        police = new PoliceOfficer(4, grid, 5, 5);
+        police = new PoliceOfficer(4, grid, 5, 5, virus);
 
         grid.addAgent(doctor, 0, 0);
         grid.addAgent(healthy, 5, 5);
@@ -84,6 +85,15 @@ public class SimulationTest {
         infected.setIsolated(true);
         infected.move();
         assertTrue(infected.getPosX() == 5 && infected.getPosY() == 5);
+    }
+
+    @Test
+    public void agentCanDead() {
+        infected.setRoundsAfterInfection(3);
+        if (infected.getRoundsAfterInfection() > 1) {
+            virus.kill(infected, 1);
+        }
+        assertEquals("dead", infected.getHealthCondition());
     }
 
     @Test

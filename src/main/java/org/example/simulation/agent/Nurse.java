@@ -1,6 +1,9 @@
 package org.example.simulation.agent;
 
+import javafx.scene.paint.Color;
 import org.example.simulation.Grid;
+import org.example.simulation.Virus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,8 +25,8 @@ public class Nurse extends Agent {
      * @param posX      Initial X position of the nurse
      * @param posY      Initial Y position of the nurse
      */
-    public Nurse(int id, Grid grid, int posX, int posY) {
-        super(id, grid, posX, posY);
+    public Nurse(int id, Grid grid, int posX, int posY, Virus virus) {
+        super(id, grid, posX, posY, virus);
         this.healthCondition = "immune";
         this.vaccinationProbability = 0.4;
     }
@@ -48,6 +51,16 @@ public class Nurse extends Agent {
                 }
             }
         }
+    }
+
+    /**
+     * Returns the color representing the nurse's presence on the simulation grid.
+     *
+     * @return the color CYAN, representing a nurse agent
+     */
+    @Override
+    public Color getColor() {
+        return Color.CYAN;
     }
 
     /**
