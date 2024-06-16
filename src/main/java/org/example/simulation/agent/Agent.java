@@ -171,7 +171,7 @@ public abstract class Agent {
             if (neighbour.getHealthCondition().equals("infected") && !neighbour.isIsolated()) {
                 if (rand.nextDouble() < transmissionFactor * virus.getTransmissionRate()) {
                     this.healthCondition = "infected";
-                    System.out.println("Athlete[" + id + "] has been infected by" + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
+                    System.out.println(this.getClass().getSimpleName() + "[" + id + "] has been infected by " + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
                 }
             }
         }

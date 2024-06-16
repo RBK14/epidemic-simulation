@@ -38,7 +38,7 @@ public class PoliceOfficer extends Agent {
         neighbours.remove(this);
 
         for (Agent neighbour : neighbours) {
-            if (neighbour.getHealthCondition().equals("infected")) {
+            if (neighbour.getHealthCondition().equals("infected") && !neighbour.isIsolated()) {
                 neighbour.setIsolated(true);
                 System.out.println("PoliceOfficer[" + this.id + "] imposed quarantine on " + neighbour.getClass().getSimpleName() + "[" + neighbour.getId() + "]");
             }
