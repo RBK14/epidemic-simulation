@@ -3,19 +3,23 @@
 }
 
 #mapBackground {
-    -fx-background-color: #161616;
+    -fx-background-color: #191919;
 }
 
 #controlsBackground {
-    -fx-background-color: #161616;
+    -fx-background-color: #191919;
 }
 
 #settingsBackground {
-    -fx-background-color: #161616;
+    -fx-background-color: #191919;
 }
 
 #scoreBackground {
-    -fx-background-color: #161616;
+    -fx-background-color: #191919;
+}
+
+#legendBackground {
+    -fx-background-color: #191919;
 }
 
 .label {
@@ -57,4 +61,52 @@
     -fx-font-size: 16;
     -fx-font-weight: bold;
     -fx-alignment: center;
+}
+
+#legendTitleLabel {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+#healthyLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: GREEN;
+}
+
+#infectedLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: RED;
+}
+
+#immuneLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: WHITE;
+}
+
+#deadLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: BLACK;
+}
+
+#doctorLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: DARKBLUE;
+}
+
+#nurseLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: CYAN;
+}
+
+#policeLabel {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: YELLOW;
 }
