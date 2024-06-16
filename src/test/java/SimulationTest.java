@@ -1,9 +1,6 @@
-import org.example.simulation.agent.PoliceOfficer;
+import org.example.simulation.agent.*;
 import org.example.simulation.Grid;
 import org.example.simulation.Virus;
-import org.example.simulation.agent.Agent;
-import org.example.simulation.agent.Citizen;
-import org.example.simulation.agent.Doctor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +13,7 @@ public class SimulationTest {
     private Doctor doctor;
     private Citizen healthy;
     private Citizen infected;
+    private Athlete athlete;
     private PoliceOfficer police;
     private Virus virus;
 
@@ -26,6 +24,7 @@ public class SimulationTest {
         doctor = new Doctor(1, grid, 0, 0, virus);
         healthy = new Citizen(2, grid, 5, 5, virus);
         infected = new Citizen(3,grid,5,5, virus);
+        athlete = new Athlete(4, grid, 5, 5, virus);
         infected.setHealthCondition("infected");
         police = new PoliceOfficer(4, grid, 5, 5, virus);
 
@@ -60,6 +59,15 @@ public class SimulationTest {
     }
 
     @Test
+    public void testAthleteMovesTowardDoctor() {
+        double distanceBeforeMove = getDistance(athlete, doctor);
+        athlete.move();
+        double distanceAfterMove = getDistance(athlete, doctor);
+        assertTrue(distanceBeforeMove > distanceAfterMove);
+        assertTrue(athlete.getPosX() == 3 || athlete.getPosY() == 3);
+    }
+
+    @Test
     public void testDoctorCuresInfected() {
         grid.moveAgent(doctor, 5, 5);
         doctor.heal();
@@ -89,8 +97,8 @@ public class SimulationTest {
 
     @Test
     public void agentCanDead() {
-        infected.setRoundsAfterInfection(3);
-        if (infected.getRoundsAfterInfection() > 1) {
+        infected.setRoundsAfterInfection(1);
+        if (infected.getRoundsAfterInfection() > 0) {
             virus.kill(infected, 1);
         }
         assertEquals("dead", infected.getHealthCondition());
